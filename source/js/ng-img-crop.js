@@ -62,12 +62,14 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function($timeo
                             scope.urlBlob = urlCreator.createObjectURL(blob);
                         });
 
-                        cropHost.getDominantColor(scope.resultImage).then(function(dominantColor) {
-                            scope.dominantColor = dominantColor;
-                        });
-                        cropHost.getPalette(scope.resultImage).then(function(palette) {
-                            scope.paletteColor = palette;
-                        });
+                        if (scope.resultImage) {
+                            cropHost.getDominantColor(scope.resultImage).then(function(dominantColor) {
+                                scope.dominantColor = dominantColor;
+                            });
+                            cropHost.getPalette(scope.resultImage).then(function(palette) {
+                                scope.paletteColor = palette;
+                            });
+                        }
 
                         updateAreaCoords(scope);
                         scope.onChange({
