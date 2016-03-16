@@ -387,12 +387,16 @@ crop.factory('cropHost', ['$document', '$q', 'cropAreaCircle', 'cropAreaSquare',
                                     cw = newImage.height;
                                     ch = newImage.width;
                                     cy = -newImage.height;
+									rw = ch;
+									rh = cw;
                                     deg = 90;
                                     break;
                                 case 8:
                                     cw = newImage.height;
                                     ch = newImage.width;
                                     cx = -newImage.width;
+									rw = ch;
+									rh = cw;
                                     deg = 270;
                                     break;
                             }
@@ -423,6 +427,10 @@ crop.factory('cropHost', ['$document', '$q', 'cropAreaCircle', 'cropAreaSquare',
                             ctx.drawImage(newImage, cx, cy, rw, rh);
 
                             image = new Image();
+							image.onload = function () {
+								resetCropHost();
+								events.trigger('image-updated');
+							};
                             image.src = canvas.toDataURL(resImgFormat);
                         } else {
                             image = newImage;
