@@ -5,7 +5,7 @@
  * Copyright (c) 2016 undefined
  * License: MIT
  *
- * Generated at Monday, February 29th, 2016, 5:21:19 AM
+ * Generated at Wednesday, March 16th, 2016, 5:00:08 PM
  */
 (function() {
 var crop = angular.module('ngImgCrop', []);
@@ -763,6 +763,10 @@ crop.factory('cropArea', ['cropCanvas', function(CropCanvas) {
         this._aspect=aspect;
     };
 
+    CropArea.prototype.getAspect = function() {
+        return this._aspect;
+    };
+
     CropArea.prototype.getCanvasSize = function() {
         return {
           w: this._ctx.canvas.width,
@@ -773,6 +777,10 @@ crop.factory('cropArea', ['cropCanvas', function(CropCanvas) {
     CropArea.prototype.getSize = function() {
         return this._size;
     };
+
+	CropArea.prototype.getAspect = function() {
+		return this._aspect;
+	};
 
     CropArea.prototype.setSize = function(size) {
         size = this._processSize(size);
@@ -2169,13 +2177,14 @@ crop.factory('cropHost', ['$document', '$q', 'cropAreaCircle', 'cropAreaSquare',
                 var areaType = self.getAreaType();
                 // enforce 1:1 aspect ratio for square-like selections
                 if ((areaType === 'circle') || (areaType === 'square')) {
-                    if(ch<cw) cw=ch;
-                    else ch=cw;
-                }else if(areaType === 'rectangle'&&isAspectRatio){
-                    if(cw/ch>resImgSize.w/resImgSize.h){
-                        cw=resImgSize.w/resImgSize.h*ch;
+                    if(ch < cw) cw = ch;
+                    else ch = cw;
+                }else if(areaType === 'rectangle' && isAspectRatio){
+                  var aspectRatio = theArea.getAspect(); // use `aspectRatio` instead of `resImgSize` dimensions bc `resImgSize` can be 'selection' string
+                    if(cw/ch > aspectRatio){
+                        cw = aspectRatio * ch;
                     }else{
-                        ch=resImgSize.w/resImgSize.h*cw;
+                        ch = aspectRatio * cw;
                     }
                 }
 
@@ -2437,12 +2446,16 @@ crop.factory('cropHost', ['$document', '$q', 'cropAreaCircle', 'cropAreaSquare',
                                     cw = newImage.height;
                                     ch = newImage.width;
                                     cy = -newImage.height;
+									rw = ch;
+									rh = cw;
                                     deg = 90;
                                     break;
                                 case 8:
                                     cw = newImage.height;
                                     ch = newImage.width;
                                     cx = -newImage.width;
+									rw = ch;
+									rh = cw;
                                     deg = 270;
                                     break;
                             }
@@ -2473,6 +2486,10 @@ crop.factory('cropHost', ['$document', '$q', 'cropAreaCircle', 'cropAreaSquare',
                             ctx.drawImage(newImage, cx, cy, rw, rh);
 
                             image = new Image();
+							image.onload = function () {
+								resetCropHost();
+								events.trigger('image-updated');
+							};
                             image.src = canvas.toDataURL(resImgFormat);
                         } else {
                             image = newImage;
@@ -2566,7 +2583,6 @@ crop.factory('cropHost', ['$document', '$q', 'cropAreaCircle', 'cropAreaSquare',
                 };
             }
             if (!isNaN(size.w) && !isNaN(size.h)) {
-                isAspectRatio=true;
                 theArea.setMinSize(size);
                 drawScene();
             }
@@ -2771,6 +2787,7 @@ crop.factory('cropHost', ['$document', '$q', 'cropAreaCircle', 'cropAreaSquare',
         };
 
         this.setAspect = function(aspect) {
+            isAspectRatio=true;
             theArea.setAspect(aspect);
             var minSize = theArea.getMinSize();
             minSize.w=minSize.h*aspect;
