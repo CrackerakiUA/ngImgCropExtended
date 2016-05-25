@@ -5,7 +5,7 @@
  * Copyright (c) 2016 undefined
  * License: MIT
  *
- * Generated at Monday, May 23rd, 2016, 3:07:01 PM
+ * Generated at Wednesday, May 25th, 2016, 10:13:03 PM
  */
 (function() {
 var crop = angular.module('ngImgCrop', []);
@@ -3122,7 +3122,7 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
                     scope.onLoadBegin({});
                 }))
                 .on('load-done', fnSafeApply(function (scope) {
-                    element.children(".loading").remove();
+                    angular.element(element.children()[element.children().length - 1]).remove();
                     scope.onLoadDone({});
                 }))
                 .on('load-error', fnSafeApply(function (scope) {
