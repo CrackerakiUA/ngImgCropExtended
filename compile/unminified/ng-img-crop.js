@@ -5,7 +5,7 @@
  * Copyright (c) 2016 undefined
  * License: MIT
  *
- * Generated at Friday, July 29th, 2016, 12:28:27 AM
+ * Generated at Wednesday, August 3rd, 2016, 5:59:28 PM
  */
 (function() {
 var crop = angular.module('ngImgCrop', []);
@@ -3082,7 +3082,7 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
                         if (callback) callback(resultImage);
                         cropHost.getResultImageDataBlob().then(function (blob) {
                             scope.resultBlob = blob;
-                            scope.urlBlob = urlCreator.createObjectURL(blob);
+                            scope.urlBlob = window.webkitUrl.createObjectURL ? window.webkitURL.createObjectURL(blob) : window.URL.createObjectURL(blob); 
                         });
 
                         if (scope.resultImage) {
