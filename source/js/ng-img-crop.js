@@ -94,7 +94,7 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
                         if (callback) callback(resultImage);
                         cropHost.getResultImageDataBlob().then(function (blob) {
                             scope.resultBlob = blob;
-                            scope.urlBlob = urlCreator.createObjectURL(blob);
+                            scope.urlBlob = window.webkitUrl.createObjectURL ? window.webkitURL.createObjectURL(blob) : window.URL.createObjectURL(blob); 
                         });
 
                         if (scope.resultImage) {
