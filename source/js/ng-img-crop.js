@@ -160,8 +160,18 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
                 };
             };
 
+            // Will get the users language settings, and return the appropriate loading text.
+            var printLoadMsg = function() {
+                var language = window.navigator.userLanguage || window.navigator.language;
+                var msg = 'Loading'; // Default to English
+                if(language.contains('fr')) { // French Msg.
+                    msg = 'Chargement';
+                }
+                return msg;
+            };
+
             if (scope.chargement == null) {
-                scope.chargement = 'Chargement';
+                scope.chargement = printLoadMsg();
             }
             var displayLoading = function () {
                 element.append('<div class="loading"><span>' + scope.chargement + '...</span></div>');

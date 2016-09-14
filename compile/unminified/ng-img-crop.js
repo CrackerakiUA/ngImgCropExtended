@@ -5,7 +5,7 @@
  * Copyright (c) 2016 Alex Kaul
  * License: MIT
  *
- * Generated at Saturday, September 3rd, 2016, 2:23:06 PM
+ * Generated at Wednesday, September 14th, 2016, 1:40:34 PM
  */
 (function() {
 var crop = angular.module('ngImgCrop', []);
@@ -1719,9 +1719,12 @@ crop.service('cropEXIF', [function () {
                 }
                 http = null;
             };
-            http.open('GET', img.src, true);
             http.responseType = 'arraybuffer';
-            http.send(null);
+            http.open('GET', img.src, true);
+            try {
+                http.send(null);
+            } catch(e) {
+            }
         } else if (window.FileReader && (img instanceof window.Blob || img instanceof window.File)) {
             fileReader.onload = function (e) {
                 if (debug) {
@@ -3229,8 +3232,18 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
                 };
             };
 
+            // Will get the users language settings, and return the appropriate loading text.
+            var printLoadMsg = function() {
+                var language = window.navigator.userLanguage || window.navigator.language;
+                var msg = 'Loading'; // Default to English
+                if(language.contains('fr')) { // French Msg.
+                    msg = 'Chargement';
+                }
+                return msg;
+            };
+
             if (scope.chargement == null) {
-                scope.chargement = 'Chargement';
+                scope.chargement = printLoadMsg();
             }
             var displayLoading = function () {
                 element.append('<div class="loading"><span>' + scope.chargement + '...</span></div>');
@@ -3248,6 +3261,7 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
                             angular.element(child).remove();
                         }
                     });
+                    updateCropject(scope);
                     scope.onLoadDone({});
                 }))
                 .on('load-error', fnSafeApply(function (scope) {
