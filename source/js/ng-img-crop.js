@@ -160,17 +160,37 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
                 };
             };
 
-            // Will get the users language settings, and return the appropriate loading text.
+            // Will get the users language settings, and return the appropriate loading text
             var printLoadMsg = function() {
                 var language = window.navigator.userLanguage || window.navigator.language;
-                var msg = 'Loading'; // Default to English
-                if(language.contains('fr')) { // French Msg.
-                    msg = 'Chargement';
+                
+                switch(language) {
+                    case 'nl':
+                        return 'Aan het laden';
+                    break;
+                        
+                    case 'fr':
+                        return 'Chargement';
+                    break;
+                    
+                    case 'es':
+                        return 'Cargando';
+                    break;
+                    
+                    case 'ct':
+                        return 'Càrrega';
+                    break;
+                    
+                    case 'de':
+                        return 'Laden';
+                    break;
+                    
+                    default:
+                        return 'Loading';
                 }
-                return msg;
             };
 
-            if (scope.chargement == null) {
+            if (null === scope.chargement) {
                 scope.chargement = printLoadMsg();
             }
             var displayLoading = function () {
