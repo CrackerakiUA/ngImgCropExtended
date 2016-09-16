@@ -132,7 +132,7 @@ gulp.task('dist:css:clean', function () {
     return gulp.src([Config.paths.compileMinified.root + '/**/*.css'], {read: false})
         .pipe(clean());
 });
-gulp.task('dist:js', ['dist:js:clean', 'scripts'], function () {
+gulp.task('dist:js', ['scripts', 'dist:js:clean'], function () {
     return gulp.src(Config.paths.compileUnminified.js + '/**/*.js')
         .pipe(ngAnnotate())
         .pipe(uglify())

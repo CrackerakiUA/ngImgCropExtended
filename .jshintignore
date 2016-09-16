@@ -2,3 +2,4 @@ source/js/ios-imagefile-megapixel.js
 source/js/exif.js
 source/js/color-thief.min.js
 source/js/canvas-to-blob.js
+gulpfile.js

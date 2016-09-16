@@ -161,30 +161,30 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
             };
 
             // Will get the users language settings, and return the appropriate loading text
-            var printLoadMsg = function() {
+            var printLoadMsg = function () {
                 var language = window.navigator.userLanguage || window.navigator.language;
-                
-                switch(language) {
+
+                switch (language) {
                     case 'nl':
+                    case 'nl_NL':
                         return 'Aan het laden';
-                    break;
-                        
+
                     case 'fr':
+                    case 'fr-FR':
                         return 'Chargement';
-                    break;
-                    
+
                     case 'es':
+                    case 'es-ES':
                         return 'Cargando';
-                    break;
-                    
-                    case 'ct':
+
+                    case 'ca':
+                    case 'ca-ES':
                         return 'Càrrega';
-                    break;
-                    
+
                     case 'de':
+                    case 'de-DE':
                         return 'Laden';
-                    break;
-                    
+
                     default:
                         return 'Loading';
                 }

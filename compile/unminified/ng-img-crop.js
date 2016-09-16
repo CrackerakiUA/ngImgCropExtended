@@ -5,7 +5,7 @@
  * Copyright (c) 2016 Alex Kaul
  * License: MIT
  *
- * Generated at Wednesday, September 14th, 2016, 1:40:34 PM
+ * Generated at Thursday, September 15th, 2016, 10:32:32 AM
  */
 (function() {
 var crop = angular.module('ngImgCrop', []);
@@ -3232,17 +3232,37 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
                 };
             };
 
-            // Will get the users language settings, and return the appropriate loading text.
-            var printLoadMsg = function() {
+            // Will get the users language settings, and return the appropriate loading text
+            var printLoadMsg = function () {
                 var language = window.navigator.userLanguage || window.navigator.language;
-                var msg = 'Loading'; // Default to English
-                if(language.contains('fr')) { // French Msg.
-                    msg = 'Chargement';
+
+                switch (language) {
+                    case 'nl':
+                    case 'nl_NL':
+                        return 'Aan het laden';
+
+                    case 'fr':
+                    case 'fr-FR':
+                        return 'Chargement';
+
+                    case 'es':
+                    case 'es-ES':
+                        return 'Cargando';
+
+                    case 'ca':
+                    case 'ca-ES':
+                        return 'Càrrega';
+
+                    case 'de':
+                    case 'de-DE':
+                        return 'Laden';
+
+                    default:
+                        return 'Loading';
                 }
-                return msg;
             };
 
-            if (scope.chargement == null) {
+            if (null === scope.chargement) {
                 scope.chargement = printLoadMsg();
             }
             var displayLoading = function () {
