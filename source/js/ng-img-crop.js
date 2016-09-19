@@ -190,7 +190,7 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function ($time
                 }
             };
 
-            if (null === scope.chargement) {
+            if (!scope.chargement) {
                 scope.chargement = printLoadMsg();
             }
             var displayLoading = function () {
