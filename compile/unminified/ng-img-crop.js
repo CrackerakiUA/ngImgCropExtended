@@ -1719,8 +1719,8 @@ crop.service('cropEXIF', [function () {
                 }
                 http = null;
             };
-            http.responseType = 'arraybuffer';
             http.open('GET', img.src, true);
+            http.responseType = 'arraybuffer';
             try {
                 http.send(null);
             } catch(e) {
